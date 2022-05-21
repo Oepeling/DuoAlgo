@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from mdeditor.fields import MDTextField
 
 
 class Task(models.Model):
@@ -37,7 +38,8 @@ class Lesson(models.Model):
     author = models.ForeignKey(Author, models.SET_NULL, blank=True, null=True, default=None, verbose_name="Credits to:")
 
     duration = models.DurationField("Lesson duration (optional)", blank=True, null=True, default=None)
-    body = models.TextField("Lesson body in .md format", blank=True, null=True)
+    content = MDTextField("Lesson content in .md format", blank=True, null=True)
+    # body = models.TextField("Lesson body in .md format", blank=True, null=True)
     link_to_code = models.URLField("Link to sample of code", blank=True, null=True, default=None)
 
     tasks = models.ManyToManyField(Task, verbose_name="List of related tasks")
