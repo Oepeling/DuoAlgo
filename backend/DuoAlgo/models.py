@@ -17,7 +17,7 @@ class Task(models.Model):
 
 class Topic(models.Model):
     name = models.CharField("Topic name", max_length=100)
-    supratopic = models.ForeignKey('self', on_delete=models.CASCADE)
+    supertopic = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
 
 
 class Author(models.Model):
