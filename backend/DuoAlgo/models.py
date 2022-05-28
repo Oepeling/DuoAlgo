@@ -4,6 +4,8 @@ from mdeditor.fields import MDTextField
 from django.db.models.signals import post_save, pre_save
 
 
+# in admin
+# todo: add topics?
 class Task(models.Model):
     title = models.CharField("Task title", max_length=50)
     description = models.TextField("Task description (optional)", blank=True, null=True, default=None)
@@ -16,13 +18,11 @@ class Task(models.Model):
     hint3 = models.TextField("Third hint", blank=True, null=True, default=None)
 
 
+# in admin
 class Topic(models.Model):
     name = models.CharField("Topic name", max_length=100)
     supertopic = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
     topo_order = models.CharField(max_length=20, blank=True, default="")
-
-    # def __str__(self):
-    #     return self.name
 
     def get_display_name(self):
         return "\\ " * len(self.topo_order) + self.name
@@ -72,8 +72,14 @@ class Topic(models.Model):
 post_save.connect(Topic.post_create, sender=Topic)
 
 
+# in admin
 class Author(models.Model):
     name = models.CharField("Author name", max_length=50)
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL,
+                             verbose_name="User account (if exists)")
+
+    def __str__(self):
+        return self.name
 
 
 class Stage(models.Model):
@@ -104,6 +110,7 @@ class Edge(models.Model):
     # todo: add verification
 
 
+# in admin
 class UserExt(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, verbose_name="User")
 
@@ -114,3 +121,6 @@ class UserExt(models.Model):
     completed_lessons = models.ManyToManyField(Lesson, related_name="done", verbose_name="Already done")
     current_lesson = models.ForeignKey(Lesson, blank=True, null=True, default=None, on_delete=models.SET_NULL,
                                        related_name="current", verbose_name="Current lesson")
+
+    def __str__(self):
+        return self.user.__str__()

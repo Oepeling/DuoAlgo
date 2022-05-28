@@ -1,6 +1,10 @@
 from django.contrib import admin
-from .models import Topic
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin
+from .models import Topic, Author, UserExt, Task
 
+
+########################### Topics ###########################
 
 class TopicInline(admin.StackedInline):
     fields = ['name']
@@ -21,3 +25,46 @@ class TopicAdmin(admin.ModelAdmin):
     @admin.action(description="Recompute topological order")
     def topo_sort(self, request, queryset):
         Topic.objects.get(name="__root__").topo_sort()
+
+
+########################### Users ###########################
+
+admin.site.unregister(User)
+
+
+class UserExtInline(admin.StackedInline):
+    model = UserExt
+    fieldsets = (
+        (None, {'fields': ('codeforces', 'infoarena', 'varena'),}),
+        ('Progress', {'fields': ('current_lesson',)}),
+    )
+    readonly_fields = ('current_lesson', 'codeforces', 'infoarena', 'varena')
+
+
+@admin.register(User)
+class UserCustomAdmin(UserAdmin):
+    inlines = UserAdmin.inlines + [UserExtInline]
+
+
+########################### Authors ###########################
+
+@admin.register(Author)
+class AuthorAdmin(admin.ModelAdmin):
+    fields = ['name', 'user']
+    list_display = ('name', 'user')
+
+    # In case you want to link an author to their account, comment this line
+    readonly_fields = ('user',)
+
+
+########################### Tasks ###########################
+
+@admin.register(Task)
+class TaskAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {'fields': (('title', 'link'), 'description', 'solution')}),
+        ('Hints', {
+         'fields': ('hints', ('hint1', 'hint2', 'hint3')),
+         'classes': ('collapse',),
+        }),
+    )
