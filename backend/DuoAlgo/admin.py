@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
+from django.utils.html import format_html
 from .models import Topic, Author, UserExt, Task, Lesson
 
 
@@ -51,23 +52,41 @@ class UserCustomAdmin(UserAdmin):
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
     fields = ['name', 'user']
-    list_display = ('name', 'user')
+    list_display = ('name', 'user_link')
+    list_display_links = ('name', 'user_link')
 
     # In case you want to link an author to their account, comment this line
     readonly_fields = ('user',)
+
+    def user_link(self, obj):
+        if obj.user is None:
+            return None
+        return format_html("<a href='/admin/auth/user/{pk}'>{username}</a>", pk=obj.user.pk, username=obj.user)
 
 
 ########################### Tasks ###########################
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
+    list_display = ('title', 'source', 'description', 'task_link', 'solution_link')
+    list_display_links = ('title', 'task_link', 'solution_link')
     fieldsets = (
-        (None, {'fields': ('title', 'source', 'link', 'description', 'solution')}),
+        (None, {'fields': ('title', 'source', 'link', 'description', 'solution', 'tags')}),
         ('Hints', {
             'fields': ('hints', ('hint1', 'hint2', 'hint3')),
             'classes': ('collapse',),
         }),
     )
+
+    def task_link(self, obj):
+        return format_html("<a href='{url}'>{url}</a>", url=obj.link)
+    task_link.short_description = "Link to task"
+
+    def solution_link(self, obj):
+        if obj.solution is None:
+            return None
+        return format_html("<a href='{url}'>Solution</a>", url=obj.solution)
+    solution_link.short_description = "Link to solution"
 
 
 ########################### Lessons ###########################

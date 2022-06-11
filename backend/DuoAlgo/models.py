@@ -5,26 +5,6 @@ from django.db.models.signals import post_save, pre_save
 
 
 # in admin
-# todo: add topics?
-class Task(models.Model):
-    title = models.CharField("Task title", max_length=50)
-    source = models.CharField("Task source", max_length=50)
-    description = models.TextField("Task description (optional)", blank=True, null=True, default=None)
-    link = models.URLField("Link to task")
-    solution = models.URLField("Link to solution (optional)", blank=True, null=True, default=None)
-
-    hints = models.BooleanField("Does it have a hint system?", default=False)
-    hint1 = models.TextField("First hint", blank=True, null=True, default=None)
-    hint2 = models.TextField("Second hint", blank=True, null=True, default=None)
-    hint3 = models.TextField("Third hint", blank=True, null=True, default=None)
-
-    def __str__(self):
-        if self.source is None:
-            return self.title
-        return self.title + " (" + self.source + ")"
-
-
-# in admin
 class Topic(models.Model):
     name = models.CharField("Topic name", max_length=100)
     supertopic = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
@@ -79,6 +59,28 @@ post_save.connect(Topic.post_create, sender=Topic)
 
 
 # in admin
+# todo: add topics?
+class Task(models.Model):
+    title = models.CharField("Task title", max_length=50)
+    source = models.CharField("Task source", max_length=50)
+    description = models.TextField("Task description (optional)", blank=True, null=True, default=None)
+    link = models.URLField("Link to task")
+    solution = models.URLField("Link to solution (optional)", blank=True, null=True, default=None)
+
+    tags = models.TextField("Tags (for now)", blank=True)
+
+    hints = models.BooleanField("Does it have a hint system?", default=False)
+    hint1 = models.TextField("First hint", blank=True, null=True, default=None)
+    hint2 = models.TextField("Second hint", blank=True, null=True, default=None)
+    hint3 = models.TextField("Third hint", blank=True, null=True, default=None)
+
+    def __str__(self):
+        if self.source is None:
+            return self.title
+        return self.title + " (" + self.source + ")"
+
+
+# in admin
 class Author(models.Model):
     name = models.CharField("Author name", max_length=50)
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL,
@@ -109,13 +111,6 @@ class Lesson(models.Model):
     tasks = models.ManyToManyField(Task, verbose_name="List of related tasks")
 
     dependencies = models.ManyToManyField('self', verbose_name="Things to learn before")
-
-
-# class Edge(models.Model):
-#     src_node = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="src")
-#     dest_node = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="dest")
-#
-#     # todo: add verification
 
 
 # in admin
