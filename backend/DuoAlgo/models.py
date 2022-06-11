@@ -8,6 +8,7 @@ from django.db.models.signals import post_save, pre_save
 # todo: add topics?
 class Task(models.Model):
     title = models.CharField("Task title", max_length=50)
+    source = models.CharField("Task source", max_length=50)
     description = models.TextField("Task description (optional)", blank=True, null=True, default=None)
     link = models.URLField("Link to task")
     solution = models.URLField("Link to solution (optional)", blank=True, null=True, default=None)
@@ -16,6 +17,11 @@ class Task(models.Model):
     hint1 = models.TextField("First hint", blank=True, null=True, default=None)
     hint2 = models.TextField("Second hint", blank=True, null=True, default=None)
     hint3 = models.TextField("Third hint", blank=True, null=True, default=None)
+
+    def __str__(self):
+        if self.source is None:
+            return self.title
+        return self.title + " (" + self.source + ")"
 
 
 # in admin
@@ -93,7 +99,7 @@ class Lesson(models.Model):
     stage = models.ForeignKey("Stage", Stage, blank=True, null=True, default=None)
 
     title = models.CharField("Title", max_length=100)
-    author = models.ForeignKey(Author, models.SET_NULL, blank=True, null=True, default=None, verbose_name="Credits to:")
+    author = models.ForeignKey(Author, models.SET_NULL, blank=True, null=True, default=None, verbose_name="Author")
 
     duration = models.DurationField("Lesson duration (optional)", blank=True, null=True, default=None)
     content = MDTextField("Lesson content in .md format", blank=True, null=True)
@@ -102,12 +108,14 @@ class Lesson(models.Model):
 
     tasks = models.ManyToManyField(Task, verbose_name="List of related tasks")
 
+    dependencies = models.ManyToManyField('self', verbose_name="Things to learn before")
 
-class Edge(models.Model):
-    src_node = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="src")
-    dest_node = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="dest")
 
-    # todo: add verification
+# class Edge(models.Model):
+#     src_node = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="src")
+#     dest_node = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="dest")
+#
+#     # todo: add verification
 
 
 # in admin

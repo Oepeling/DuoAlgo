@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
-from .models import Topic, Author, UserExt, Task
+from .models import Topic, Author, UserExt, Task, Lesson
 
 
 ########################### Topics ###########################
@@ -35,7 +35,7 @@ admin.site.unregister(User)
 class UserExtInline(admin.StackedInline):
     model = UserExt
     fieldsets = (
-        (None, {'fields': ('codeforces', 'infoarena', 'varena'),}),
+        (None, {'fields': ('codeforces', 'infoarena', 'varena'), }),
         ('Progress', {'fields': ('current_lesson',)}),
     )
     readonly_fields = ('current_lesson', 'codeforces', 'infoarena', 'varena')
@@ -62,9 +62,20 @@ class AuthorAdmin(admin.ModelAdmin):
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
     fieldsets = (
-        (None, {'fields': (('title', 'link'), 'description', 'solution')}),
+        (None, {'fields': ('title', 'source', 'link', 'description', 'solution')}),
         ('Hints', {
-         'fields': ('hints', ('hint1', 'hint2', 'hint3')),
-         'classes': ('collapse',),
+            'fields': ('hints', ('hint1', 'hint2', 'hint3')),
+            'classes': ('collapse',),
         }),
+    )
+
+
+########################### Lessons ###########################
+
+@admin.register(Lesson)
+class LessonAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {'fields': (('title', 'author'), 'topic', 'stage', 'dependencies')}),
+        ('Content', {'fields': ('duration', 'content')}),
+        ('Extra', {'fields': ('tasks',)}),
     )
