@@ -64,7 +64,7 @@ class Task(models.Model):
     title = models.CharField("Task title", max_length=50)
     source = models.CharField("Task source", max_length=50)
     description = models.TextField("Task description (optional)", blank=True, null=True, default=None)
-    link = models.URLField("Link to task")
+    link = models.URLField("Link to task", unique=True)
     solution = models.URLField("Link to solution (optional)", blank=True, null=True, default=None)
 
     tags = models.TextField("Tags (for now)", blank=True)
