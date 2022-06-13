@@ -113,6 +113,7 @@ class Lesson(models.Model):
     dependencies = models.ManyToManyField('self', verbose_name="Things to learn before")
 
 
+# todo: add done tasks
 # in admin
 class UserExt(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, verbose_name="User")
