@@ -117,7 +117,7 @@ class Lesson(models.Model):
     dependencies = models.ManyToManyField('self', verbose_name="Things to learn before", blank=True, null=True)
 
     def __str__(self):
-        return self.title
+        return self.title + " (" + self.stage.name + ")"
 
 
 # todo: add done tasks -> in separate class
