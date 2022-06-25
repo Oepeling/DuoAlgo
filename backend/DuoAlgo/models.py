@@ -80,6 +80,7 @@ class Task(models.Model):
         return self.title + " (" + self.source + ")"
 
 
+# todo: make one-to-one
 # in admin
 class Author(models.Model):
     name = models.CharField("Author name", max_length=50)
@@ -93,6 +94,9 @@ class Author(models.Model):
 class Stage(models.Model):
     name = models.CharField("Stage name", max_length=50)
     index = models.IntegerField("Stage index", unique=True)
+
+    def __str__(self):
+        return self.name + "(" + str(self.index) + ")"
 
 
 class Lesson(models.Model):
@@ -108,9 +112,12 @@ class Lesson(models.Model):
     # body = models.TextField("Lesson body in .md format", blank=True, null=True)
     link_to_code = models.URLField("Link to sample of code", blank=True, null=True, default=None)
 
-    tasks = models.ManyToManyField(Task, verbose_name="List of related tasks")
+    tasks = models.ManyToManyField(Task, verbose_name="List of related tasks", blank=True, null=True)
 
-    dependencies = models.ManyToManyField('self', verbose_name="Things to learn before")
+    dependencies = models.ManyToManyField('self', verbose_name="Things to learn before", blank=True, null=True)
+
+    def __str__(self):
+        return self.title
 
 
 # todo: add done tasks -> in separate class

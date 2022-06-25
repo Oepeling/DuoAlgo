@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 from django.utils.html import format_html
-from .models import Topic, Author, UserExt, Task, Lesson
+from .models import Topic, Author, UserExt, Task, Lesson, Stage
 
 
 ########################### Topics ###########################
@@ -93,8 +93,18 @@ class TaskAdmin(admin.ModelAdmin):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
+    list_display = ('title', 'stage', 'topic', 'author')
     fieldsets = (
         (None, {'fields': (('title', 'author'), 'topic', 'stage', 'dependencies')}),
         ('Content', {'fields': ('duration', 'content')}),
         ('Extra', {'fields': ('tasks',)}),
     )
+
+
+########################### Stages ###########################
+
+# admin.site.register(Stage)
+
+@admin.register(Stage)
+class StageAdmin(admin.ModelAdmin):
+    list_display = ('name', 'index')
