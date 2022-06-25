@@ -102,7 +102,7 @@ class Stage(models.Model):
 class Lesson(models.Model):
     # todo: change defaults
     topic = models.ForeignKey("Topic", Topic, blank=True, null=True, default=None)
-    stage = models.ForeignKey("Stage", Stage, blank=True, null=True, default=None)
+    stage = models.ForeignKey("Stage", Stage)
 
     title = models.CharField("Title", max_length=100)
     author = models.ForeignKey(Author, models.SET_NULL, blank=True, null=True, default=None, verbose_name="Author")
