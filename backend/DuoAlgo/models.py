@@ -103,6 +103,7 @@ class Lesson(models.Model):
     # todo: change defaults
     topic = models.ForeignKey("Topic", Topic, blank=True, null=True, default=None)
     stage = models.ForeignKey("Stage", Stage)
+    level = models.PositiveIntegerField("Level in stage", blank=True, null=True, default=None)
 
     title = models.CharField("Title", max_length=100)
     author = models.ForeignKey(Author, models.SET_NULL, blank=True, null=True, default=None, verbose_name="Author")
@@ -112,15 +113,14 @@ class Lesson(models.Model):
     # body = models.TextField("Lesson body in .md format", blank=True, null=True)
     link_to_code = models.URLField("Link to sample of code", blank=True, null=True, default=None)
 
-    tasks = models.ManyToManyField(Task, verbose_name="List of related tasks", blank=True, null=True)
+    tasks = models.ManyToManyField(Task, verbose_name="List of related tasks", blank=True)
 
-    dependencies = models.ManyToManyField('self', verbose_name="Things to learn before", blank=True, null=True)
+    dependencies = models.ManyToManyField('self', verbose_name="Things to learn before", blank=True)
 
     def __str__(self):
         return self.title + " (" + self.stage.name + ")"
 
 
-# todo: add done tasks -> in separate class
 # todo: move completed_lessons in a separate class
 # in admin
 class UserExt(models.Model):
@@ -136,3 +136,8 @@ class UserExt(models.Model):
 
     def __str__(self):
         return self.user.__str__()
+
+
+class DoneTasks(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="User")
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, verbose_name="Task")
