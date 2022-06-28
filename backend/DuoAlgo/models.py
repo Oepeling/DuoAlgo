@@ -91,6 +91,7 @@ class Author(models.Model):
         return self.name
 
 
+# in admin
 class Stage(models.Model):
     name = models.CharField("Stage name", max_length=50)
     index = models.IntegerField("Stage index", unique=True)
@@ -99,6 +100,7 @@ class Stage(models.Model):
         return self.name + "(" + str(self.index) + ")"
 
 
+# in admin
 class Lesson(models.Model):
     # todo: change defaults
     topic = models.ForeignKey("Topic", Topic, blank=True, null=True, default=None)
@@ -115,10 +117,16 @@ class Lesson(models.Model):
 
     tasks = models.ManyToManyField(Task, verbose_name="List of related tasks", blank=True)
 
-    dependencies = models.ManyToManyField('self', verbose_name="Things to learn before", blank=True)
-
     def __str__(self):
         return self.title + " (" + self.stage.name + ")"
+
+    class Meta:
+        order_with_respect_to = 'stage'
+
+
+class Edge(models.Model):
+    src = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="outs")
+    dest = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="ins")
 
 
 # in admin
