@@ -121,7 +121,6 @@ class Lesson(models.Model):
         return self.title + " (" + self.stage.name + ")"
 
 
-# todo: move completed_lessons in a separate class
 # in admin
 class UserExt(models.Model):
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, verbose_name="User")
@@ -130,10 +129,6 @@ class UserExt(models.Model):
     infoarena = models.CharField("Infoarena username", max_length=50, blank=True, null=True, default=None)
     varena = models.CharField("Varena username", max_length=50, blank=True, null=True, default=None)
 
-    completed_lessons = models.ManyToManyField(Lesson, related_name="done", verbose_name="Already done")
-    current_lesson = models.ForeignKey(Lesson, blank=True, null=True, default=None, on_delete=models.SET_NULL,
-                                       related_name="current", verbose_name="Current lesson")
-
     def __str__(self):
         return self.user.__str__()
 
@@ -141,3 +136,9 @@ class UserExt(models.Model):
 class DoneTasks(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="User")
     task = models.ForeignKey(Task, on_delete=models.CASCADE, verbose_name="Task")
+
+
+class CompletedLessons(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="User")
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name="Lesson")
+    in_progress = models.BooleanField(verbose_name="Still in progress", default=False)

@@ -37,9 +37,9 @@ class UserExtInline(admin.StackedInline):
     model = UserExt
     fieldsets = (
         (None, {'fields': ('codeforces', 'infoarena', 'varena'), }),
-        ('Progress', {'fields': ('current_lesson',)}),
+        # ('Progress', {'fields': ('current_lesson',)}),
     )
-    readonly_fields = ('current_lesson', 'codeforces', 'infoarena', 'varena')
+    readonly_fields = ('codeforces', 'infoarena', 'varena')
 
 
 @admin.register(User)
