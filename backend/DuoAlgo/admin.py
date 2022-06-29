@@ -141,8 +141,8 @@ def topo_sort(stages=None):
                         q.append(next)
 
 
-class LessonInline(admin.StackedInline):
-    fields = ['src']
+class LessonInline(admin.TabularInline):
+    fields = ['src', 'hidden']
     model = Edge
     fk_name = 'dest'
     extra = 1

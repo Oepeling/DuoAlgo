@@ -124,9 +124,11 @@ class Lesson(models.Model):
         order_with_respect_to = 'stage'
 
 
+# todo: add bool de odonare
 class Edge(models.Model):
     src = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="outs")
     dest = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="ins")
+    hidden = models.BooleanField(verbose_name="Hidden", default=False)
 
 
 # in admin
