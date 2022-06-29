@@ -18,7 +18,7 @@ class TopicInline(admin.StackedInline):
 @admin.register(Topic)
 class TopicAdmin(admin.ModelAdmin):
     fields = ['name', 'supertopic']
-    list_display = ('get_display_name', 'get_supertopic_name', 'topo_order')
+    list_display = ('display_name', 'supertopic_name', 'topo_order')
     # readonly_fields = ('supertopic',)
     # list_select_related = ('supertopic',)
 
@@ -150,7 +150,7 @@ class LessonInline(admin.TabularInline):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ('title', 'stage', 'level', 'topic', 'author')
+    list_display = ('title', 'stage', 'topic', 'level', 'author')
     fieldsets = (
         (None, {'fields': (('title', 'author'), 'topic', 'stage', 'level')}),
         ('Content', {'fields': ('duration', 'content')}),
@@ -160,7 +160,7 @@ class LessonAdmin(admin.ModelAdmin):
     inlines = [LessonInline]
 
     actions = ['topo_sort_all', 'topo_sort_stage']
-    list_filter = ['stage']
+    list_filter = ['stage', 'author']
 
     @admin.action(description="Recompute ALL topological order")
     def topo_sort_all(self, request, queryset):

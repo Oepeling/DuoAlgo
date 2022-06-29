@@ -9,16 +9,15 @@ class Topic(models.Model):
     name = models.CharField("Topic name", max_length=100)
     supertopic = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
     topo_order = models.CharField(max_length=20, blank=True, default="")
+    full_name = models.CharField(max_length=100, blank=True, default="")
 
-    def get_display_name(self):
+    def display_name(self):
         return "\\ " * len(self.topo_order) + self.name
 
     def __str__(self):
-        if self.supertopic is None:
-            return "~"
-        return self.supertopic.__str__() + " / " + self.name
+        return self.full_name
 
-    def get_supertopic_name(self):
+    def supertopic_name(self):
         if self.supertopic is None:
             return ""
         else:
@@ -30,12 +29,16 @@ class Topic(models.Model):
     def count_subtopics(self):
         return self.get_subtopics().count()
 
-    def topo_sort(self, order=""):
-        self.topo_order = order;
+    def topo_sort(self, order="", path="~"):
+        if self.supertopic is not None:
+            path = path + " / " + self.name
+
+        self.full_name = path
+        self.topo_order = order
         self.save()
 
         for index, subtopic in enumerate(self.get_subtopics()):
-            subtopic.topo_sort(order + chr(index + 97))
+            subtopic.topo_sort(order + chr(index + 97), path)
 
     @classmethod
     def post_create(cls, sender, instance, created, *args, **kwargs):

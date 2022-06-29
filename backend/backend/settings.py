@@ -77,8 +77,14 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.duoalgo'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'defaultdb',
+        'USER': 'doadmin',
+        'PASSWORD': 'AVNS_emmXbO2vZhsjCyVMq2o',
+        'HOST': 'db-postgresql-duoalgo-do-user-11781297-0.b.db.ondigitalocean.com',
+        'PORT': '25060',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.duoalgo'),
     }
 }
 
