@@ -1,0 +1,37 @@
+.NavBar {
+    top: 0;
+    width: 100%;
+    position: fixed;
+    align-items: center;
+    background-color: #263543;
+}
+
+.NavBarHelp {
+    position: absolute;
+}
+
+.Item {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    background-color: #263543;
+}
+
+.Item h2 {
+    font-size: calc(4px + 0.6vw);
+    color: #f7f5f7;
+    text-decoration: none;
+}
+
+.Item:hover {
+    background-color: #2c4654;
+}
+
+.Left {
+    float: left;
+}
+
+.Right {
+    float: right;
+}
+

@@ -2,9 +2,7 @@ import axios from 'axios';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-//fiecare functie are deasupra comentata functia din views care ii corespunde
 
-//user_data_by_email
 export function userDataByEmail(user_email) {
     return axios({
         method: 'post',
@@ -37,7 +35,6 @@ export function userDataByEmail(user_email) {
     })
 }
 
-//user_data_by_id
 export function userDataById(userId) {
     return axios({
         method: 'post',
@@ -92,11 +89,11 @@ export function updateUser(userData) {
     })
 }
 
-//lesson_list
 export function lessonList() {
+    // console.log("!!! query")
     return axios({
         method: 'get',
-        url: 'lesson/',
+        url: 'lessons/',
         headers: {
             'content-type': 'application/json'
         }
@@ -111,18 +108,51 @@ export function lessonList() {
                     id: data.id,
                     title: data.title,
                     author: data.author,
+                    stage: data.stage,
                     level: data.level,
-                    section: data.section,
-                    prerequisites: data.prerequisites,
-                    status: data.status,    // 0 - unavailable, 1 - open, 2 - done
-                    lesson: data.lesson,
-                    problems: data.problems,
+                    topic: data.topic,
+                    // prerequisites: data.prerequisites,
+                    // status: data.status,    // 0 - unavailable, 1 - open, 2 - done
+                    status: 1,
+                    // lesson: data.lesson,
+                    // problems: data.problems,
                 }
                 lessons.push(aux_lesson)
             }
         }
 
         return lessons
+    }).catch(function (error) {
+        console.log(error)
+    })
+}
+
+export function lessonInfo(lessonId) {
+    console.log('lesson/' + lessonId,)
+    return axios({
+        method: 'get',
+        url:  lessonId + '/',
+        headers: {
+            'content-type': 'application/json'
+        }
+    }).then(result => {
+        let data = result.data['lesson']
+        let lesson = {
+            id: data.id,
+            title: data.title,
+            author: data.author,
+            stage: data.stage,
+            level: data.level,
+            topic: data.topic,
+            prerequisites: data.dependancies,
+            // status: data.status,    // 0 - unavailable, 1 - open, 2 - done
+            status: 1,
+            content: data.content,
+            link_to_code: data.link_to_code,
+            tasks: data.tasks,
+        }
+
+        return lesson
     }).catch(function (error) {
         console.log(error)
     })

@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '&it&!*0f9)h@up6o^tsfv437l@+*zlf82s)m*djn!2&f&ff4f$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -83,10 +83,19 @@ DATABASES = {
         'PASSWORD': 'AVNS_emmXbO2vZhsjCyVMq2o',
         'HOST': 'db-postgresql-duoalgo-do-user-11781297-0.b.db.ondigitalocean.com',
         'PORT': '25060',
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.path.join(BASE_DIR, 'db.duoalgo'),
-    }
+    },
+    # 'debug': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.duoalgo'),
+    # }
 }
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.duoalgo'),
+        }
+    }
 
 
 # Password validation
