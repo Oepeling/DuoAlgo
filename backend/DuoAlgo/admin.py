@@ -58,7 +58,7 @@ class AuthorAdmin(admin.ModelAdmin):
     list_display_links = ('name', 'user_link')
 
     # In case you want to link an author to their account, comment this line
-    readonly_fields = ('user',)
+    # readonly_fields = ('user',)
 
     def user_link(self, obj):
         if obj.user is None:
