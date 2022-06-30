@@ -18,32 +18,32 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        this.refreshLessons()
-    }
-
-    refreshLessons = () => {
-        lessonList().then(
-            result => this.setState({
-                lessons: result
-            }))
+        this.setState({lessons: []})
+        lessonList().then(lessons => {
+            this.setState({lessons})
+            // console.log("lesson_list", lessons)
+            // console.log(this.state.lessons)
+        })
     }
 
     render() {
         return (
-            <Router id={'App'}>
+            <Router className={'App'}>
                 <NavBar/>
 
-                <Route exact path={'/'}>
-                    <Redirect to={'/account'}/>
-                </Route>
-                <Route path={'/account'}> <Account/> </Route>
-                <Route path={'/progress'}> <Progress lessons={this.state.lessons}/> </Route>
+                <div className={'AppPage'}>
+                    {/*<Route exact path={'/'}>*/}
+                    {/*    <Redirect to={'/account'}/>*/}
+                    {/*</Route>*/}
+                    <Route path={'/account'}> <Account/> </Route>
+                    <Route path={'/progress'}> <Progress lessons={this.state.lessons}/> </Route>
 
-                {this.state.lessons.map(lesson =>
-                    <Route key={lesson.id} path={'/lesson/' + lesson.id}>
-                        <Lesson lesson={lesson}/>
-                    </Route>
-                )}
+                    {this.state.lessons.map(lesson =>
+                        <Route key={lesson.id} path={'/lesson/' + lesson.id}>
+                            <Lesson lesson_id={lesson.id}/>
+                        </Route>
+                    )}
+                </div>
             </Router>
         )
     }

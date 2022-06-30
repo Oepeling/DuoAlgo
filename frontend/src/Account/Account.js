@@ -9,6 +9,7 @@ class Account extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            // loggedIn: true
             loggedIn: Cookies.get('user_id') !== undefined
         }
     }

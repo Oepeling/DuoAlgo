@@ -1,0 +1,41 @@
+.LessonsList {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.LessonCard {
+    display: flex;
+    position: static;
+    flex-direction: column;
+    border-style: hidden;
+    box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    padding: 5px 10px 5px 10px;
+    margin: 20px 0 20px 0;
+    background-color: #f7f5f7;
+}
+
+.BasicLessonInfo {
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.BasicLessonInfo p {
+    margin: 0 0 10px 0;
+    display: flex;
+    justify-content: flex-start;
+    color: #263543;
+    font-size:calc(5px + 0.9vw);
+}
+
+.lesson {
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+}

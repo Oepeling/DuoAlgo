@@ -33,3 +33,17 @@ a {
 .foot-lnk {
   text-align: center;
 }
+
+.AppPage {
+    padding: 10px;
+    margin-top: 50px;
+}
+
+.App {
+    font-family: 'Open Sans', sans-serif;
+    width: auto;
+    height: auto;
+    background-size: cover;
+    z-index: 0;
+    background-repeat: no-repeat;
+}
