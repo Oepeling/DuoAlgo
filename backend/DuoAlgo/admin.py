@@ -150,7 +150,7 @@ class LessonInline(admin.TabularInline):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ('title', 'stage', 'level', 'author')
+    list_display = ('title', 'stage', 'level', 'topic', 'author')
     fieldsets = (
         (None, {'fields': (('title', 'author'), 'topic', 'stage', 'level')}),
         ('Content', {'fields': ('duration', 'content')}),
