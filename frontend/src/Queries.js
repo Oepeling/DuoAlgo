@@ -128,7 +128,7 @@ export function lessonList() {
 }
 
 export function lessonInfo(lessonId) {
-    console.log('lesson/' + lessonId,)
+    // console.log('lesson/' + lessonId,)
     return axios({
         method: 'get',
         url:  lessonId + '/',
